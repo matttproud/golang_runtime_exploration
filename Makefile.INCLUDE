@@ -1,0 +1,28 @@
+# Copyright 2014 Matt T. Proud (matt.proud@gmail.com)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+READELF ?= readelf
+OBJDUMP ?= objdump
+export GOROOT ?= /usr/local/go
+export PATH := $(GOROOT)/bin:$(PATH)
+# -work to save output in temporary directory
+# -v for verbose
+# -x to output steps
+# -S to emit intermediate assembly
+# -N to disable optimizations
+# -v for verbose
+# -m for escape analysis
+# -a force rebuild of prebuilt artifacts
+export GO_BUILD ?= go build -work -v -x -gcflags '-S -N -v -m -l' -a
+
