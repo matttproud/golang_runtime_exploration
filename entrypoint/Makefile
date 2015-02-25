@@ -14,10 +14,19 @@
 
 include ../Makefile.INCLUDE
 
-all: entrypoint.disassembled entrypoint.elfheader
+all: entrypoint.c.disassembled entrypoint.c.elfheader entrypoint.disassembled entrypoint.elfheader
 
 entrypoint: entrypoint.go
 	$(GO_BUILD) $<
+
+entrypoint.c.bin: entrypoint.c
+	$(CC) $< -static -o $@
+
+entrypoint.c.elfheader: entrypoint.c.bin
+	$(READELF) -h $< > $@
+
+entrypoint.c.disassembled: entrypoint.c.bin
+	$(OBJDUMP) -M reg-names-raw -d -f $< > $@
 
 entrypoint.elfheader: entrypoint
 	$(READELF) -h $< > $@
@@ -26,6 +35,6 @@ entrypoint.disassembled: entrypoint
 	$(OBJDUMP) -M reg-names-raw -d -f $< > $@
 
 clean:
-	rm -f entrypoint entrypoint.disassembled entrypoint.elfheader
+	rm -f entrypoint.c.bin entrypoint.c.disassembled entrypoint.c.elfheader entrypoint.disassembled entrypoint.elfheader
 
 .PHONY: clean
